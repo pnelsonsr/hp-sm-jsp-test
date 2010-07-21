@@ -2,7 +2,7 @@ print("=====================");
 print("Start");
 print("=====================");
 
-cRFC = "CM0000026"; /* one CI         */
+cRFC = "CM0000026"; /* one CI        */
 fCMA = new SCFile("approval");
 
 if(fCMA.doSelect("unique.key = \"" + cRFC + "\"")==RC_SUCCESS) {
