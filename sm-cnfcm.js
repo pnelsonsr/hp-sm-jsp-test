@@ -1,8 +1,8 @@
 //=============================================================================
 // Name     : CNF ChM Functions
-// CodeJock : Patrick Nelson (patrick@nelsons.name)
-// Version  : 0.1.27
-//=============================================================================
+// CodeJock : Patrick Nelson (nelson.patrick@con-way.com)
+// Version  : 0.2.1
+// Revision : 2010-193
 //=============================================================================
 
 //-----------------------------------------------
@@ -655,4 +655,74 @@ function SetSOX(bSOX){
   //print("In SetSOX -> " + bSOX);
   fChange.cnf_sox=bSOX;
   fChange.doUpdate();
+}
+
+//-----------------------------------------------
+function SetLateRFCTest(aoObj){
+//-----------------------------------------------
+  var oArgs=dArg({acRFC:"all",acDoUpdate:true,acShowIt:false},aoObj);
+  print("acRFC      -> "+oArgs.acRFC);
+  print("acDoUpdate -> "+oArgs.acDoUpdate);
+  print("acShowIt   -> "+oArgs.acShowIt);
+}
+
+//-----------------------------------------------
+function SetLateRFC(aoObj){
+//-----------------------------------------------
+  var oArgs = dArg({acRFC:"all",acDoUpdate:true,acShowIt:false},aoObj);
+  var nGrace = 3 ; var nCount = 0 ; var nLate = 0 ; var nMIAD = 86400000 ; var cUpdate = "";
+  var dLate = new Date() ; dLate.setDate(dLate.getDate()-nGrace)
+  if (oArgs.acShowIt) {print("Date Late -> "+dLate);}
+  var fRFC = new SCFile("cm3r");
+  var rRC = fRFC.doSelect(((oArgs.acRFC=="all") ? "open=true":"number=\""+oArgs.acRFC+"\"")+" AND category <> \"Unplanned\" AND planned.end <> NULL"); 
+  while (rRC==RC_SUCCESS) {
+    nLate = parseInt((dLate-fRFC.planned_end)/nMIAD);      
+    if (nLate>0 && fRFC.cnf_planned_days!=nLate) {
+      fRFC.cnf_planned_days = nLate.toString();
+      if (oArgs.acDoUpdate) {fRFC.doUpdate();cUpdate = "updated"} else {cUpdate = "not updated";}
+      if (oArgs.acShowIt) {print("-"+fRFC.number+" - "+fRFC.current_phase+" - "+fRFC.planned_end+" - "+fRFC.cnf_planned_days+" -> "+cUpdate);}
+      nCount += 1;
+    }
+    rRC = fRFC.getNext();
+  }
+  if (oArgs.acShowIt) {print("Overdue RFCs -> "+nCount);}
+}
+
+//-----------------------------------------------
+function dArg(outArgs,inArgs) {
+//-----------------------------------------------
+  for (cArgNam in inArgs) {outArgs[cArgNam] = inArgs[cArgNam];}
+  return outArgs;
+}
+
+//-----------------------------------------------
+function GetLateRFC(aoObj) {
+//-----------------------------------------------
+  var oArgs = dArg({acInclNew:false,acOnlyNew:false},aoObj);
+  if (oArgs.acInclNew==true && oArgs.acOnlyNew==true) {
+    oArgs.acInclNew=false ; oArgs.acOnlyNew=true;
+  }
+  nLate = 3 ; nLateCnt = 0 ; nOpenCnt = 0 ; bLate = false ; dLate = new Date();
+  dLate.setDate(dLate.getDate()-nLate)
+  print("Date Late -> "+dLate);
+  fCM3R = new SCFile("cm3r");
+  rRC=fCM3R.doSelect("current.phase<>\"Closed\""); 
+  while (rRC==RC_SUCCESS) 	{
+    nOpenCnt++;
+    if (oArgs.acInclNew) {
+      bLate = (fCM3R.planned_end!=null && parseInt((dLate-fCM3R.planned_end)/86400000)>0) ? true:false;
+    } else if (oArgs.acOnlyNew) {
+      bLate = (fCM3R.current_phase=="New" && fCM3R.planned_end!=null && parseInt((dLate-fCM3R.planned_end)/86400000)>0) ? true:false;
+    } else {
+      bLate = (fCM3R.current_phase!="New" && fCM3R.planned_end!=null && parseInt((dLate-fCM3R.planned_end)/86400000)>0) ? true:false;
+    }  
+    if (bLate) {
+      nLateCnt++;
+      print("Open -> "+fCM3R.number+" - "+fCM3R.current_phase);
+      print("  - Overdue - "+fCM3R.planned_end);
+    }
+    rRC = fCM3R.getNext();
+  }
+  print("Open RFCs -> "+nOpenCnt);
+  print("Late RFCs -> "+nLateCnt);
 }
