@@ -6,27 +6,35 @@ print("=====================");
 // Test Variable Assignment
 //--------------------------
 
-print("-----------------");
+var fAD  = new SCFile("approvaldef");
+var fIAG = new SCFile("assignment");
+var aIAG = new Array();
+var aCAG = new Array();
+var aAD  = new Array();
+var cAD  = new Array();
+var sAL  = ""
+var sAD  = "Approval Normal";
 
-if (!system.functions.gui()) {
-  if (record.approval_status="approved") {
-    var getchange = new SCFile("cm3r");
-    var query ="number=\""+record.unique_key+"\"";
-    var rc = getchange.doSelect(query);
-    if (rc==RC_SUCCESS) {
-      if (getchange.current_phase== "Pending Acceptance" || getchange.current_phase== "Pending Approval") {
-        getchange.doAction("close");
-      } else {
-        print("DEBUG: Incorrect Phase")
-      }
-    } else {
-      print("ERROR: No Change for Approval found")
-    }
-  }
+// Get the List of IAGs
+rRC=fIAG.doSelect(new QueryCond("name", NEQ, "")); 
+while (rRC == RC_SUCCESS) 	{
+  if(aIAG.length==0) {aIAG[0]=fIAG.name;} else {aIAG.push(fIAG.name);}
+  rRC = fIAG.getNext();
 }
-
-print("-----------------");
- 
+// Get the List of Approval Definitions
+rRC=fAD.doSelect(new QueryCond("name",EQ,sAD)); 
+for(i=0 ; i<fAD.group_name.length() ; i++) { 
+  if(aAD.length==0) {aAD[0]=fAD.group_name[i];} else {aAD.push(fAD.group_name[i]);}
+}
+// Insert IAGs into AD 
+for(i=0 ; i<aIAG.length ; i++) {
+  if(aIAG[i].substr(0,4)!="TEST") {sAL="CA - "+aIAG[i];} else {sAL=aIAG[i];}
+  if(aCAG.length==0) {aCAG[0]=sAL;} else {aCAG.push(sAL);}
+}
+// Show it
+for(i=0 ; i<aCAG.length ; i++) { 
+  print("aCAG["+i+"] -> "+aCAG[i]);
+}
 
 print("=====================");
 print("Done");
