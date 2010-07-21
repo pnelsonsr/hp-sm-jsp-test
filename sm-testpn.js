@@ -10,147 +10,193 @@ print("=====================");
   var iCnt=1;
   var sNewVal="";
   var sSay="";        ;
-  var aOldList = new Array() 
+  var aCAGList = new Array() 
 
+  aCAGList[0]="CII CA - CRM Application Ownership Team";
+  aCAGList[1]="CA - CII CRM Application Ownership Team";
+  aCAGList[2]="CII CA - eBusiness Team";
+  aCAGList[3]="CA - CII eBusiness Team";
+  aCAGList[4]="CII CA - Rating Team";
+  aCAGList[5]="CA - CII Rating Team";
+  aCAGList[6]="EBI-Core CA - Team Notifications";
+  aCAGList[7]="CA - EBI-Core Team Notifications";
+  aCAGList[8]="IT CA - Client Systems Infrastructure";
+  aCAGList[9]="CA - IT Client Systems Infrastructure";
+  aCAGList[10]="IT CA - DATABASE DB2";
+  aCAGList[11]="CA - IT DATABASE DB2";
+  aCAGList[12]="IT CA - DATABASE FINANCIALS";
+  aCAGList[13]="CA - IT DATABASE FINANCIALS";
+  aCAGList[14]="IT CA - DATABASE FREIGHT";
+  aCAGList[15]="CA - IT DATABASE FREIGHT";
+  aCAGList[16]="IT CA - DATABASE INFORMATICA";
+  aCAGList[17]="CA - IT DATABASE INFORMATICA";
+  aCAGList[18]="IT CA - DATABASE INFORMIX";
+  aCAGList[19]="CA - IT DATABASE INFORMIX";
+  aCAGList[20]="IT CA - DATABASE MENLO";
+  aCAGList[21]="CA - IT DATABASE MENLO";
+  aCAGList[22]="IT CA - DATABASE SQL Server";
+  aCAGList[23]="CA - IT DATABASE SQL Server";
+  aCAGList[24]="IT CA - Distributed Systems Administration";
+  aCAGList[25]="CA - IT Distributed Systems Administration";
+  aCAGList[26]="IT CA - Document Management FTE";
+  aCAGList[27]="CA - IT Document Management FTE";
+  aCAGList[28]="IT CA - DTS Server Support";
+  aCAGList[29]="CA - IT DTS Server Support";
+  aCAGList[30]="IT CA - Enterprise Accounting FTE";
+  aCAGList[31]="CA - IT Enterprise Accounting FTE";
+  aCAGList[32]="IT CA - Enterprise Infrastructure Services";
+  aCAGList[33]="CA - IT Enterprise Infrastructure Services";
+  aCAGList[34]="IT CA - Enterprise Transmissions FTE";
+  aCAGList[35]="CA - IT Enterprise Transmissions FTE";
+  aCAGList[36]="IT CA - Enterprise Web Core";
+  aCAGList[37]="CA - IT Enterprise Web Core";
+  aCAGList[38]="IT CA - FIT Monitoring Correlation Analysts";
+  aCAGList[39]="CA - IT FIT Monitoring Correlation Analysts";
+  aCAGList[40]="IT CA - HRMS";
+  aCAGList[41]="CA - IT HRMS";
+  aCAGList[42]="IT CA - Image Operations";
+  aCAGList[43]="CA - IT Image Operations";
+  aCAGList[44]="IT CA - Information Security & Compliance";
+  aCAGList[45]="CA - IT Information Security & Compliance";
+  aCAGList[46]="IT CA - ITSM - Service Management";
+  aCAGList[47]="CA - IT ITSM - Service Management";
+  aCAGList[48]="IT CA - iUSA Con-way";
+  aCAGList[49]="CA - IT iUSA Con-way";
+  aCAGList[50]="IT CA - iUSA Logistics";
+  aCAGList[51]="CA - IT iUSA Logistics";
+  aCAGList[52]="IT CA - kronos";
+  aCAGList[53]="CA - IT kronos";
+  aCAGList[54]="IT CA - Mainframe Software";
+  aCAGList[55]="CA - IT Mainframe Software";
+  aCAGList[56]="IT CA - Network Engineering Services";
+  aCAGList[57]="CA - IT Network Engineering Services";
+  aCAGList[58]="IT CA - Network Operations";
+  aCAGList[59]="CA - IT Network Operations";
+  aCAGList[60]="IT CA - Output Processing";
+  aCAGList[61]="CA - IT Output Processing";
+  aCAGList[62]="IT CA - P2D";
+  aCAGList[63]="CA - IT P2D";
+  aCAGList[64]="IT CA - Production Control";
+  aCAGList[65]="CA - IT Production Control";
+  aCAGList[66]="IT CA - Return and Repair";
+  aCAGList[67]="CA - IT Return and Repair";
+  aCAGList[68]="IT CA - SCM Team";
+  aCAGList[69]="CA - IT SCM Team";
+  aCAGList[70]="IT CA - STC Core Team";
+  aCAGList[71]="CA - IT STC Core Team";
+  aCAGList[72]="IT CA - Storage Mgmt & Capacity Planning";
+  aCAGList[73]="CA - IT Storage Mgmt & Capacity Planning";
+  aCAGList[74]="IT CA - Systems Operations";
+  aCAGList[75]="CA - IT Systems Operations";
+  aCAGList[76]="IT CA - TSS Deskside Support";
+  aCAGList[77]="CA - IT TSS Deskside Support";
+  aCAGList[78]="IT CA - TSS Network Support";
+  aCAGList[79]="CA - IT TSS Network Support";
+  aCAGList[80]="IT CA - VMware Server Group";
+  aCAGList[81]="CA - IT VMware Server Group";
+  aCAGList[82]="IT CA - Voice Telecomm Services";
+  aCAGList[83]="CA - IT Voice Telecomm Services";
+  aCAGList[84]="IT CA - Windows Server Group";
+  aCAGList[85]="CA - IT Windows Server Group";
+  aCAGList[86]="IT CA - Windows Server Group";
+  aCAGList[87]="CA - IT Windows Server Group";
+  aCAGList[88]="MLG_TECH_SUPPORT CA -";
+  aCAGList[89]="CA - MLG_TECH_SUPPORT";
+  aCAGList[90]="MWW CA - European IT Support Team";
+  aCAGList[91]="CA - MWW European IT Support Team";
 /*
-  aOldList[0]="CII CA - "             ; aOldList[1]="CA - CII ";
-  aOldList[2]="EBI-Core CA - "        ; aOldList[3]="CA - EBI-Core ";
-  aOldList[4]="IT CA - "              ; aOldList[5]="CA - IT ";
-  aOldList[6]="MLG_TECH_SUPPORT CA -" ; aOldList[7]="CA - MLG_TECH_SUPPORT";
-  aOldList[8]="MWW CA - "             ; aOldList[9]="CA - MWW ";
+  aCAGList[0]="IT CA - Client Systems Infrastructure";
+  aCAGList[1]="CA - IT Client Systems Infrastructure";
+  aCAGList[2]="IT CA - DATABASE FREIGHT";
+  aCAGList[3]="CA - IT DATABASE FREIGHT";
 */
-/*
-  aOldList[0]="CII CA - CRM Application Ownership Team";
-  aOldList[1]="CA - CII CRM Application Ownership Team";
-  aOldList[2]="CII CA - eBusiness Team";
-  aOldList[3]="CA - CII eBusiness Team";
-  aOldList[4]="CII CA - Rating Team";
-  aOldList[5]="CA - CII Rating Team";
-  aOldList[6]="EBI-Core CA - Team Notifications";
-  aOldList[7]="CA - EBI-Core Team Notifications";
-  aOldList[8]="IT CA - Client Systems Infrastructure";
-  aOldList[9]="CA - IT Client Systems Infrastructure";
-  aOldList[10]="IT CA - DATABASE DB2";
-  aOldList[11]="CA - IT DATABASE DB2";
-  aOldList[12]="IT CA - DATABASE FINANCIALS";
-  aOldList[13]="CA - IT DATABASE FINANCIALS";
-  aOldList[14]="IT CA - DATABASE FREIGHT";
-  aOldList[15]="CA - IT DATABASE FREIGHT";
-  aOldList[16]="IT CA - DATABASE INFORMATICA";
-  aOldList[17]="CA - IT DATABASE INFORMATICA";
-  aOldList[18]="IT CA - DATABASE INFORMIX";
-  aOldList[19]="CA - IT DATABASE INFORMIX";
-  aOldList[20]="IT CA - DATABASE MENLO";
-  aOldList[21]="CA - IT DATABASE MENLO";
-  aOldList[22]="IT CA - DATABASE SQL Server";
-  aOldList[23]="CA - IT DATABASE SQL Server";
-  aOldList[24]="IT CA - Distributed Systems Administration";
-  aOldList[25]="CA - IT Distributed Systems Administration";
-  aOldList[26]="IT CA - Document Management FTE";
-  aOldList[27]="CA - IT Document Management FTE";
-  aOldList[28]="IT CA - DTS Server Support";
-  aOldList[29]="CA - IT DTS Server Support";
-  aOldList[30]="IT CA - Enterprise Accounting FTE";
-  aOldList[31]="CA - IT Enterprise Accounting FTE";
-  aOldList[32]="IT CA - Enterprise Infrastructure Services";
-  aOldList[33]="CA - IT Enterprise Infrastructure Services";
-  aOldList[34]="IT CA - Enterprise Transmissions FTE";
-  aOldList[35]="CA - IT Enterprise Transmissions FTE";
-  aOldList[36]="IT CA - Enterprise Web Core";
-  aOldList[37]="CA - IT Enterprise Web Core";
-  aOldList[38]="IT CA - FIT Monitoring Correlation Analysts";
-  aOldList[39]="CA - IT FIT Monitoring Correlation Analysts";
-  aOldList[40]="IT CA - HRMS";
-  aOldList[41]="CA - IT HRMS";
-  aOldList[42]="IT CA - Image Operations";
-  aOldList[43]="CA - IT Image Operations";
-  aOldList[44]="IT CA - Information Security & Compliance";
-  aOldList[45]="CA - IT Information Security & Compliance";
-  aOldList[46]="IT CA - ITSM - Service Management";
-  aOldList[47]="CA - IT ITSM - Service Management";
-  aOldList[48]="IT CA - iUSA Con-way";
-  aOldList[49]="CA - IT iUSA Con-way";
-  aOldList[50]="IT CA - iUSA Logistics";
-  aOldList[51]="CA - IT iUSA Logistics";
-  aOldList[52]="IT CA - kronos";
-  aOldList[53]="CA - IT kronos";
-  aOldList[54]="IT CA - Mainframe Software";
-  aOldList[55]="CA - IT Mainframe Software";
-  aOldList[56]="IT CA - Network Engineering Services";
-  aOldList[57]="CA - IT Network Engineering Services";
-  aOldList[58]="IT CA - Network Operations";
-  aOldList[59]="CA - IT Network Operations";
-  aOldList[60]="IT CA - Output Processing";
-  aOldList[61]="CA - IT Output Processing";
-  aOldList[62]="IT CA - P2D";
-  aOldList[63]="CA - IT P2D";
-  aOldList[64]="IT CA - Production Control";
-  aOldList[65]="CA - IT Production Control";
-  aOldList[66]="IT CA - Return and Repair";
-  aOldList[67]="CA - IT Return and Repair";
-  aOldList[68]="IT CA - SCM Team";
-  aOldList[69]="CA - IT SCM Team";
-  aOldList[70]="IT CA - STC Core Team";
-  aOldList[71]="CA - IT STC Core Team";
-  aOldList[72]="IT CA - Storage Mgmt & Capacity Planning";
-  aOldList[73]="CA - IT Storage Mgmt & Capacity Planning";
-  aOldList[74]="IT CA - Systems Operations";
-  aOldList[75]="CA - IT Systems Operations";
-  aOldList[76]="IT CA - TSS Deskside Support";
-  aOldList[77]="CA - IT TSS Deskside Support";
-  aOldList[78]="IT CA - TSS Network Support";
-  aOldList[79]="CA - IT TSS Network Support";
-  aOldList[80]="IT CA - VMware Server Group";
-  aOldList[81]="CA - IT VMware Server Group";
-  aOldList[82]="IT CA - Voice Telecomm Services";
-  aOldList[83]="CA - IT Voice Telecomm Services";
-  aOldList[84]="IT CA - Windows Server Group";
-  aOldList[85]="CA - IT Windows Server Group";
-  aOldList[86]="IT CA - Windows Server Group";
-  aOldList[87]="CA - IT Windows Server Group";
-  aOldList[88]="MLG_TECH_SUPPORT CA -";
-  aOldList[89]="CA - MLG_TECH_SUPPORT";
-  aOldList[90]="MWW CA - European IT Support Team";
-  aOldList[91]="CA - MWW European IT Support Team";
-*/
+for( i=0 ; i<aCAGList.length ; i+=2 ) {
+  print("CAG-->" + aCAGList[i] + "<--xx-->" + aCAGList[i+1] + "<--xx");
+  sOldCAG = aCAGList[i];
+  sNewCAG = aCAGList[i+1];
 
-sOldCAG = "CII CA - CRM Application Ownership Team";
-sNewCAG = "CA - CII CRM Application Ownership Team";
 
-// CAG Name Change
-  rRC=fCM3Profile.doSelect(new QueryCond("name", EQ, sOldCAG)); 
-
-// Profile CAG Name Change
-  rRC=fCM3Group.doSelect(new QueryCond("name", EQ, sOldCAG)); 
-
-// Operator CAG Name Change
+  // BEG Profile CAG Name Change --------------------------------------------------------------------- 
+  print("[ CAG ]");
   bUpdated=false;
-  rRC=fOperator.doSelect(new QueryCond("contact.name", EQ, sOldCAG)); 
+  rRC=fCM3Groups.doSelect(new QueryCond("name", EQ, sOldCAG)); 
   while (rRC == RC_SUCCESS) 	{
+    print("    old ->\"" + fCM3Groups.name + "\"");
+    print("    new ->\"" + sNewCAG + "\"");
+    fCM3Groups.name = sNewCAG;
+    fCM3Groups.doUpdate();
+    bUpdated=true;
+    print("     ->UPDATED<-");
+    rRC = fCM3Groups.getNext();
+  }
+  sSay=(bUpdated) ? "CAG Table Updated" : "No Updates! CAG Table NOT Updated";
+  sShw=(bUpdated) ? "###" : "***";
+  print(sShw + "\n" + sShw + " " + sSay + "\n" + sShw + "\n");
+  // END Profile CAG Name Change ---------------------------------------------------------------------
 
-    bFirst=true;
-    for( i=0 ; i<fOperator.profile_change.length() ; i++ ) {
-      if(fOperator.profile_change[i] != null) {
-        for( j=0 ; j<aOldList.length ; j+=2 ) {
-          if(fOperator.profile_change[i].substr(0,aOldList[j].length) == aOldList[j]) { 
 
-            if (bFirst) {print("-> "+fOperator.name);bFirst=false;}
-            print("   \"" + fOperator.profile_change[i].substr(0,aOldList[j].length) + "\" = \"" + aOldList[j] + "\"");
-            print("    Was -> \"" + fOperator.profile_change[i] + "\"");
-            print("Will Be -> \"" + sNewVal + "\"");
-            sNewVal = aOldList[j+1] + fOperator.profile_change[i].substr(aOldList[j].length)
-            fOperator.profile_change[i]=sNewVal;
-            fOperator.doUpdate();
-            bUpdated=true;
-          }
-        }
+  // BEG CAG Name Change -----------------------------------------------------------------------------
+  print("[ Profiles ]");
+  bUpdated=false;
+  print("-= Name =-");
+  rRC=fCM3Profile.doSelect(new QueryCond("name", EQ, sOldCAG)); 
+  while (rRC == RC_SUCCESS) 	{
+    print("    old ->\"" + fCM3Profile.name + "\"");
+    print("    new ->\"" + sNewCAG + "\"");
+    fCM3Profile.name = sNewCAG;
+    fCM3Profile.doUpdate();
+    bUpdated=true;
+    print("     ->UPDATED<-");
+    rRC = fOperator.getNext();
+  }
+  print("-= AG =-");
+  rRC=fCM3Profile.doSelect(new QueryCond("approval.groups", EQ, sOldCAG)); 
+  while (rRC == RC_SUCCESS) 	{
+    print("  name ->\"" + fCM3Profile.name + "\"");
+    for( j=0 ; j<fCM3Profile.approval_groups.length() ; j++ ) {
+      if(fCM3Profile.approval_groups[j] == sOldCAG) { 
+        print("    old ->\"" + fCM3Profile.approval_groups[j] + "\"");
+        print("    new ->\"" + sNewCAG + "\"");
+        fCM3Profile.approval_groups[j]=sNewCAG;
+        fCM3Profile.doUpdate();
+        bUpdated=true;
+        print("     ->UPDATED<-");
+      }
+    }
+    rRC = fCM3Profile.getNext();
+  }
+  sSay=(bUpdated) ? "Profile Table Updated" : "No Updates! Profile Table NOT Updated";
+  sShw=(bUpdated) ? "###" : "***";
+  print(sShw + "\n" + sShw + " " + sSay + "\n" + sShw + "\n");
+  // END CAG Name Change -----------------------------------------------------------------------------
+
+
+  // BEG Operator CAG Name Change --------------------------------------------------------------------
+  print("[ Operators ]");
+  bUpdated=false;
+  rRC=fOperator.doSelect(new QueryCond("profile.change", EQ, sOldCAG)); 
+  while (rRC == RC_SUCCESS) 	{
+    print("  name ->\"" + fOperator.name + "\"");
+    for( j=0 ; j<fOperator.profile_change.length() ; j++ ) {
+      if(fOperator.profile_change[j] == sOldCAG) { 
+        print("    old ->\"" + fOperator.profile_change[j] + "\"");
+        print("    new ->\"" + sNewCAG + "\"");
+        fOperator.profile_change[j]=sNewCAG;
+        fOperator.doUpdate();
+        bUpdated=true;
+        print("     ->UPDATED<-");
       }
     }
     rRC = fOperator.getNext();
-
   }
   sSay=(bUpdated) ? "Operator Table Updated" : "No Updates! Operator Table NOT Updated";
-  print("###\n" + "### " + sSay + "\n###\n");
+  sShw=(bUpdated) ? "###" : "***";
+  print(sShw + "\n" + sShw + " " + sSay + "\n" + sShw + "\n");
+  // END Operator CAG Name Change --------------------------------------------------------------------
+
+
+}
+
 
 print("=====================");
 print("Done");
