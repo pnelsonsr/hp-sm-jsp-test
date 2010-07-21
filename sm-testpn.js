@@ -5,57 +5,58 @@ print("=====================");
 //--------------------------
 // Test Variable Assignment
 //--------------------------
-//sCI="AADADB";                //Applications and Software
-//sCI="Net Backup Server 2";   //computer
-//sCI="BMCPDS";                //database
-//sCI="bipdp2.con-way.com";    //networkcomponents
-  sCI="Big Hard Disk";         //storage
-//sCI="";
 
-  sOwningTeam = system.library.cnfcm.GetAGFromCI(sCI);
-  if(sOwningTeam==null | sOwningTeam=="AUTO") {
-    sOwningTeam = ""
-    sOwner = "hamilton, jim";
-  } else {
-    sOwner = system.library.cnfcm.GetAGLead(sOwningTeam);
-  }
-  sAssignedTeam=sOwningTeam;
-  if(sOwner==null) {sOwner = "hamilton, jim";}
-  sAssignedTo=sOwner;
-  sChangeManager=sOwner
-  
-  print("sOwningTeam -> "+sOwningTeam);
-  print("sOwner -> "+sOwner);
-  print("sAssignedTeam -> "+sAssignedTeam);
-  print("sAssignedTo -> "+sAssignedTo);
+//dMyDate1=system.functions.tod();
+//dMyDate2=system.functions.date(system.functions.tod() + '1 00:00:00'); 
 
-  sCIType=system.library.cnfcm.GetCIType(sCI);
-  if(sCIType!=null) {
-    print("Type -> "+sCIType);
-  } else {
-    print("Type -> NONE");
-  }
-  
-  if(sCIType=="Applications and Software") {
-    sService="Applications";
-  } else if(sCIType=="computer") {
-    sService="Hardware";
-  } else if(sCIType=="database") {
-    sService="Database";
-  } else if(sCIType=="networkcomponents") {
-    sService="Network";
-  } else if(sCIType=="storage") {
-    sService="Storage";
-  } else {
-    sService="";
-  }  
+print("-----------------");
 
-  if(sService!=null) {
-    print("Service -> "+sService);
-  } else {
-    print("Service -> NONE");
-  }
+fChange = new SCFile("cm3r");
+fChange.doSelect("number = \"CM0004640\"");
 
+
+  dNow         = new XMLDate(new Date());
+  dPlanStart   = dNow.getDatum();
+  dNow.addDuration("PT1H");
+  dPlanEnd     = dNow.getDatum(); 
+  dActualStart = dPlanStart
+  dActualEnd   = dPlanEnd
+
+fChange.planned_start=dActualStart;
+print( "dActualStart: \n" + dActualStart);
+fChange.planned_end=dActualEnd;
+print( "dActualEnd: \n"+ dActualEnd);
+fChange.doUpdate();
+print("start -> "+fChange.planned_start);
+print("end   -> "+fChange.planned_end);
+
+
+
+
+
+
+//print( "Creating XMLDate object..." );
+//var d = new XMLDate( new Date() );
+//var dStart = d.getDatum();
+//fChange.planned_start=d.getDatum();
+
+//print( "The value of the new XMLDate object is: \n" + d.getDatum() );
+
+
+//print( "Adding 0 year, 0 months, 0 days, and 1 hours to date..." );
+//d.addDuration( "PT1H" );
+//var dEnd = d.getDatum();
+//fChange.planned_end=d.getDatum();
+//print( "The value of the new XMLDate object is: \n"+ d.getDatum() );
+
+//fChange.doUpdate();
+//print("start -> "+fChange.planned_start);
+//print("end   -> "+fChange.planned_end);
+
+//dMyDate1=system.functions.date(dur.getSCDateTimeString());
+
+//print("my date 1 -> "+dMyDate1);
+//print("my date 2 -> "+dMyDate2);
 
 
 print("=====================");
