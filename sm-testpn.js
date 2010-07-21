@@ -3,11 +3,11 @@ print("Start");
 print("=====================");
 
   var sAD="Approval Normal";
-//var sAD="Approval Standard";
 //var sAD="Approval Emergency";
+//var sAD="Approval Standard";
 
-ClearAD(sAD);
-PopulateAD(sAD);
+system.library.cnfcm.ClearAD(sAD);
+//system.library.cnfcm.PopulateAD(sAD);
 
 print("=====================");
 print("Done");
