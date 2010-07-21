@@ -5,18 +5,25 @@ print("=====================");
 //--------------------------
 // Test Variable Assignment
 //--------------------------
-//cRFC = "CM0000070"; /* zero CIs       */
-  cRFC = "CM0000003"; /* one CI         */
-//cRFC = "CM0000069"; /* two CIs        */
-//cRFC = "RC9999999"; /* Bad RFC Number */
+  aAL = "CII CRM Application Ownership Team"; 
+  aCA = "CII CA - CRM Application Ownership Team"; 
+  aAL = "IT Client Systems Infrastructure"; 
+  aCA = "IT CA - Client Systems Infrastructure"; 
+  aAL = "MWW European IT Support Team"; 
+  aCA = "MWW CA - European IT Support Team"; 
 
-//  bClear=true;
-    bClear=false;
-
-    bShow=true;
-//  bShow=false;
-
-system.library.cnfcm.GetImpact(cRFC,bClear,bShow)
+print(aAL.substring(0,3));
+if(aAL.substring(0,3)=="CII") {
+  sAL="CII CA - "+aAL.substring(4,aAL.length);
+} else if(aAL.substring(0,3)=="IT ") {
+  sAL="IT CA - "+aAL.substring(3,aAL.length);
+} else if(aAL.substring(0,3)=="MWW") {
+  sAL="MWW CA - "+aAL.substring(4,aAL.length);
+} else {
+  sAL=aAL;
+}
+print(sAL);
+print(aCA);
 
 print("=====================");
 print("Done");
