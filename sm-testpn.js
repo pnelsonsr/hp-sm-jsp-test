@@ -3,32 +3,23 @@ print("Start");
 print("=====================");
 
 var sTheRFC = "CM0000104";
-//SetLateRFC({acRFC:sTheRFC,acDoUpdate:true,acShowIt:false});
-SetLateRFC({acRFC:sTheRFC});
+var bDoUpdt = false;
+var bShowIt = true;
+
+system.library.cnfcm.SetLateRFC({acDoUpdate:bDoUpdt,acShowIt:bShowIt});
 
 print("=====================");
 print("Done");
 print("=====================");
 
-//-----------------------------------------------
-function SetLateRFC(aoObj){
-//-----------------------------------------------
-
-  var oArgs=defArgs({acRFC:"all",acDoUpdate:true,acShowIt:false},aoObj);
-
-  print("acRFC      -> "+oArgs.acRFC);
-  print("acDoUpdate -> "+oArgs.acDoUpdate);
-  print("acShowIt   -> "+oArgs.acShowIt);
-
-}
 
 /*
 //-----------------------
 // Notes 
 //-----------------------
 
-if () {
-
-}
+system.library.cnfcm.SetLateRFC({acDoUpdate:bDoUpdt,acShowIt:bShowIt});
+system.library.cnfcm.SetLateRFC({acRFC:sTheRFC,acDoUpdate:bDoUpdt,acShowIt:bShowIt});
+system.library.cnfcm.SetLateRFCTest({acRFC:sTheRFC,acDoUpdate:bDoUpdt,acShowIt:bShowIt});
 
 */
