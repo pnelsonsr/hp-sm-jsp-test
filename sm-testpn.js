@@ -2,9 +2,9 @@ print("=====================");
 print("Start");
 print("=====================");
 
-//sTheRFC = null ; var bNoUpdate = true ; 
-//system.library.cnfcm.SetLateRFC(sTheRFC,bNoUpdate);
-system.library.cnfcm.SetLateRFC();
+var sTheRFC = "CM0000104";
+//system.library.cnfcm.SetLateRFC({acRFC:sTheRFC,acDoUpdate:true,acShowIt:false});
+system.library.cnfcm.SetLateRFC({acRFC:sTheRFC});
 
 print("=====================");
 print("Done");
