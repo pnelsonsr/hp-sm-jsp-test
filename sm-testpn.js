@@ -2,28 +2,21 @@ print("=====================");
 print("Start");
 print("=====================");
 
-  var nCnt = 0;
-  var fRFC = new SCFile("cm3r");
-  var cRFC = "CM0000104";
-  
-  //var sSql = "open = true";
-  //var sSql = "planned.end <> NULL";
-  var sSql = "open = true AND category <> \"Unplanned\" AND planned.end <> NULL AND current.phase <> \"New\"";
-  //var sSql = "number=\""+cRFC+"\" AND planned.end <> NULL";
-  
-  print("Hey -> "+sSql);
-  rRC = fRFC.doSelect(sSql);
-  while (rRC==RC_SUCCESS) {
-    print(fRFC.number+" -> could be updated - "+fRFC.planned_end+" - "+fRFC.open);
-    nCnt += 1;
-    rRC = fRFC.getNext();
-  }
-  print("total possible records -> "+nCnt);
+runIt({iCnt:5,cFish:"tuna"});
+print("=====================");
+runIt({});
+print("=====================");
+runIt({iAmt:10,iOrd:5});
 
 print("=====================");
 print("Done");
 print("=====================");
 
+function runIt(aoObj) {
+  var oArgs=defArgs({iCnt:1,iAmt:2,iLst:3},aoObj);
+  for (cArg in oArgs) {print(cArg+" -> "+oArgs[cArg]);}
+  print("iCnt -> "+oArgs.iCnt);
+}
 
 /*
 //-----------------------
