@@ -2,20 +2,24 @@ print("=====================");
 print("Start");
 print("=====================");
 
-runIt({iCnt:5,cFish:"tuna"});
-print("=====================");
-runIt({});
-print("=====================");
-runIt({iAmt:10,iOrd:5});
+var sTheRFC = "CM0000104";
+//SetLateRFC({acRFC:sTheRFC,acDoUpdate:true,acShowIt:false});
+SetLateRFC({acRFC:sTheRFC});
 
 print("=====================");
 print("Done");
 print("=====================");
 
-function runIt(aoObj) {
-  var oArgs=defArgs({iCnt:1,iAmt:2,iLst:3},aoObj);
-  for (cArg in oArgs) {print(cArg+" -> "+oArgs[cArg]);}
-  print("iCnt -> "+oArgs.iCnt);
+//-----------------------------------------------
+function SetLateRFC(aoObj){
+//-----------------------------------------------
+
+  var oArgs=defArgs({acRFC:"all",acDoUpdate:true,acShowIt:false},aoObj);
+
+  print("acRFC      -> "+oArgs.acRFC);
+  print("acDoUpdate -> "+oArgs.acDoUpdate);
+  print("acShowIt   -> "+oArgs.acShowIt);
+
 }
 
 /*
