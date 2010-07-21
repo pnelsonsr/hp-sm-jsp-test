@@ -2,29 +2,33 @@ print("=====================");
 print("Start");
 print("=====================");
 
-var thestuff="";
+cRFC = "CM0000026"; /* one CI         */
+fCMA = new SCFile("approval");
 
-thestuff += "1 -> \n";
-thestuff += "2 -> \n";
-thestuff += "3 -> \n";
-thestuff += "4 -> \n";
-thestuff += "5 -> \n";
-thestuff += "6 -> \n";
-thestuff += "7 -> \n";
-thestuff += "8 -> \n";
-
-function writeToFile( path, binary, object ) {
-  print( "Writing " + path + " to file..." );
-  var output = writeFile( path, binary, object );
-  print( "The number of bytes written to file was: " + output );
-  return output
+if(fCMA.doSelect("unique.key = \"" + cRFC + "\"")==RC_SUCCESS) {
+ print("Hey I Found it -> "+fCMA.current_pending_groups);
 }
 
-thestuff += "9 -> \n";
-print(thestuff);
-print("C:\\sm.log");
-writeToFile( "C:\\sm.log", null, thestuff ); 
+iCnt=fCMA.current_pending_groups.length();
+print("Array Count is -> "+iCnt);
+for(i=0 ; i<iCnt ; i++) {fCMA.current_pending_groups.pop();} 
+print("Cleared Value -> "+fCMA.current_pending_groups);
+
+fCMA.current_pending_groups.push("ITSM","DUDE","HELLO");
+
+print("New Value -> "+fCMA.current_pending_groups);
+ 
+fCMA.doUpdate();
 
 print("=====================");
 print("Done");
 print("=====================");
+
+
+//fChange = new SCFile("cm3r");
+
+//CMA.current_pending_groups.push("ITSM");
+//fCMA.current_pending_groups.push("DUDE");
+//fCMA.current_pending_groups.push("HELLO");
+  
+//fCMA.current_pending_groups={"IT DATABASE FINANCIALS", "IT Client Systems Infrastructure", "IT DATABASE DB2"}
