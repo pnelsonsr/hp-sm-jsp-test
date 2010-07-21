@@ -2,35 +2,38 @@ print("=====================");
 print("Start");
 print("=====================");
 
-//--------------------------
-// Test Variable Assignment
-//--------------------------
+var aCIUS = new Array();
 
-print("-----------------");
-var sSay; var sTemplate;
-fTemplate = new SCFile("Template");
-rRC=fTemplate.doSelect(new QueryCond("tablename", EQ, "cm3r")); 
-while (rRC == RC_SUCCESS) 	{
-  sTemplate = fTemplate.name;
-  print("# "+sTemplate);
-  for(i=0 ; i<fTemplate.templateInfo.length() ; i++) {
-    if(fTemplate.templateInfo[i].field=="cnw.template.used") {
-      //print(fTemplate.templateInfo[i].field+" = "+fTemplate.templateInfo[i].value);
-      if(fTemplate.templateInfo[i].value==null ) {
-        fTemplate.templateInfo[i].value=sTemplate;
-        sSay="+ "
-      } else {
-        sSay="- "
-      }
-      //print(sSay+fTemplate.templateInfo[i].field+" = "+fTemplate.templateInfo[i].value);
-      //print(fTemplate.templateInfo[i].value);
-      print(sSay+fTemplate.templateInfo[i].value);
-    }
-  }  
-  fTemplate.doUpdate();  
-  rRC = fTemplate.getNext();
+iRI=0 ; iLI=1 ; iLvl=1; 
+
+aCIUS[iRI]=[iLvl];
+print("aCIUS -> " + aCIUS);
+aCIUS[iRI][iLI]="Test Sys 1";
+print("aCIUS -> " + aCIUS);
+
+iRI=1 ; iLI=1 ; iLvl=2; 
+
+aCIUS[iRI]=[iLvl];
+print("aCIUS -> " + aCIUS);
+aCIUS[iRI][iLI]="Test Sys 2";
+print("aCIUS -> " + aCIUS);
+
+print("aCIUS.length -> " + aCIUS.length);
+
+print("==================");
+
+iRI=0;
+for(iLI=0 ; iLI<aCIUS.length ; iLI++) {
+  print("aCIUS[" + iRI + "][" + iLI + "] -> " + aCIUS[iRI][iLI]);
 }
- 
+
+print("==================");
+
+iLI=1;
+for(iRI=0 ; iRI<aCIUS.length ; iRI++) {
+  print("aCIUS[" + iRI + "][" + iLI + "] -> " + aCIUS[iRI][iLI]);
+}
+
 
 print("=====================");
 print("Done");
