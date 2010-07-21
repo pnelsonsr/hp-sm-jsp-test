@@ -2,11 +2,12 @@ print("=====================");
 print("Start");
 print("=====================");
 
-var sTheRFC = "CM0000104";
-var bDoUpdt = false;
-var bShowIt = true;
-
-system.library.cnfcm.SetLateRFC({acDoUpdate:bDoUpdt,acShowIt:bShowIt});
+var nCnt = 1 ; var i    = 0;
+for ( i=0 ; i<10 ; i++ ) {
+  print("Cnt -> "+nCnt);
+  nCnt++;
+  //nCnt += 1;
+}
 
 print("=====================");
 print("Done");
