@@ -2,25 +2,38 @@ print("=====================");
 print("Start");
 print("=====================");
 
-//var f = system.files.contacts; print( "The value of system.files.contacts is:\n" + f );
-
-//var fm = system.forms.ScriptLibrary; print( "The value of system.forms.ScriptLibrary is:\n" + fm );
-
-//var fn = system.functions.date(); print( "The value of system.functions.date() is:\n" + fn );
-
-//var o = system.oldrecord; print( "The value of system.record is:\n" + o ); does not work
-
-//var s = system.sysinfo; print( "The value of system.sysinfo is:\n" + s );
-
-//var th = system.threads; print( "The value of system.threads is:\n" + th );
-
-//var u = system.user; print( "The value of system.user is:\n" + u );
-
-//var u = system.users; print( "The value of system.users is:\n" + u );
-
-var v = system.vars.$L_file; print( "The value of system.vars.$L_file is:\n" + v );
-
+var fChange = new SCFile( "cm3r" );
+var aCI     = new Array();
+var aAG     = new Array();
+var iIdx    = 0;
+var cSql    = "number = \"CM0000267\"";
+var gRC     = fChange.doSelect( cSql );
+print("result 1a -> " + fChange);
+print("result 1b -> " + aAG.length);
 print("=====================");
+
+aCI.push(system.library.cnfcm.GetCI(fChange));
+if(aCI.length = 1) {
+  aAG.push(system.library.cnfcm.GetAG(aCI));
+} else if (aCI.length > 1) {
+  for( i=0 ; i<aCI.length() ; i++ ) {
+    print("result 3c" + i + " -> " + aCI[i]);
+  }
+}
+
+
+
+
+if(aAG.length > 0) {
+ aAG.push(system.library.cnfcm.GetAG(fChange));
+ print("result 2a -> " + aAG);
+} else {
+ aAG.push(system.library.cnfcm.GetAG(fChange));
+ print("result 2a -> " + aAG);
+}
+
+print("result 1c -> " + aAG.length);
+
 
 print("=====================");
 print("Done");
