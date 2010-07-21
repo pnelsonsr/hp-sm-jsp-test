@@ -1,7 +1,7 @@
 //=============================================================================
 // Name     : CNF ChM Functions
 // CodeJock : Patrick Nelson (nelson.patrick@con-way.com)
-// Version  : 0.2.2
+// Version  : 0.2.3
 // Revision : 2010-201
 //=============================================================================
 
@@ -720,7 +720,7 @@ var oArgs=DArg({acRFC:"all",abUp:true,abShw:false,abSA:false},aoObj);if(oArgs.ac
 //-----------------------------------------------
 function SetLateRFC(aoObj){
 //-----------------------------------------------
-var oArgs=DArg({anTop:"all",anLow:0,abUp:true,abShw:false,abSA:false},aoObj);if(oArgs.abSA){SArg(oArgs);}
+var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abUp:true,abShw:false,abSA:false},aoObj);if(oArgs.abSA){SArg(oArgs);}
 //-----------------------------------------------
 // anTop : "all"  -> Range Top value
 // anLow : 0      -> Range Low value
@@ -728,16 +728,17 @@ var oArgs=DArg({anTop:"all",anLow:0,abUp:true,abShw:false,abSA:false},aoObj);if(
 // abShw : false  -> Show the progress
 // abSA  : false  -> Show function call Arguments 
 //-----------------------------------------------
-  var i;var nI;var nMIAD=86400000;var nGrace=3;var nCnt=0;
+  var i;var nI;var nMIAD=86400000;var nCnt=0;
   var aMyList=[];var fRFC=new SCFile("cm3r");var dLate=new Date();
-  aMyList = GetLateRFC({anTop:oArgs.anTop,anLow:oArgs.anLow,anGD:nGrace,abRA:true,abSA:oArgs.abSA});
-  dLate.setDate(dLate.getDate()-nGrace);
+  aMyList = GetLateRFC({anTop:oArgs.anTop,anLow:oArgs.anLow,anGD:oArgs.anGD,abRA:true,abSA:oArgs.abSA});
+  dLate.setDate(dLate.getDate()-oArgs.anGD);
   if(oArgs.abSA){print("aMyList -> ");}
   for (i in aMyList) {
     if(oArgs.abSA){nI=parseInt(i)+1;print(" "+nI+"-"+aMyList[i]);}
     if (fRFC.doSelect("number=\""+aMyList[i]+"\"")==RC_SUCCESS) {
-      nLate = parseInt((dLate-fRFC.planned_end)/nMIAD);      
-      if (nLate>0 && fRFC.cnf_planned_days!=nLate) {
+      nLate = parseInt(((dLate-fRFC.planned_end)/nMIAD)+oArgs.anGD);      
+      if (nLate>oArgs.anGD && fRFC.cnf_planned_days!=nLate) {
+        //nLate += oArgs.anGD;
         if(oArgs.abShw){print("-"+fRFC.number+" ---- "+fRFC.cnf_planned_days+" > "+nLate);}
         fRFC.cnf_planned_days = nLate.toString();
         if(oArgs.abUp){fRFC.doUpdate();cUpdate = "updated"} else {cUpdate = "not updated";}
@@ -754,7 +755,7 @@ var oArgs=DArg({anTop:"all",anLow:0,abUp:true,abShw:false,abSA:false},aoObj);if(
 //-----------------------------------------------
 function GetLateRFC(aoObj) {
 //-----------------------------------------------
-var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abAll:false,abNew:false,abNot:false,abRA:false,abSA:false},aoObj);if(oArgs.abSA){SArg(oArgs);}
+var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abAll:false,abNew:false,abNot:false,abRA:false,abSA:true},aoObj);if(oArgs.abSA){SArg(oArgs);}
 //-----------------------------------------------
 // anTop : "all"  -> Range Top value
 // anLow : 0      -> Range Low value
@@ -763,7 +764,7 @@ var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abAll:false,abNew:false,abNot:false,a
 // abNew : false  -> Show only New records
 // abNot : false  -> Show Not late records
 // abRA  : false  -> Return Array
-// abSA  : false  -> Show function call Arguments 
+// abSA  : true   -> Show function call Arguments 
 //-----------------------------------------------
 // RETURNS an array of RFC numbers
 //-----------------------------------------------
@@ -771,7 +772,7 @@ var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abAll:false,abNew:false,abNot:false,a
   var nLate=0;var nOpen=0;var bLate=false;var sSQL;var rRC;var nMIAD=86400000;var sSay;
   var dLate=new Date();var fCM3R=new SCFile("cm3r");if(oArgs.abRA){var aList=[];}
   dLate.setDate(dLate.getDate()-oArgs.anGD);
-  if(!oArgs.abRA){print("Date Late -> "+dLate);}
+  if(oArgs.abSA){print("Date Late -> "+dLate);}
   if(oArgs.anTop.toLowerCase()=="all"){oArgs.anTop=GetLastRFC();}
   if(oArgs.anTop<oArgs.anLow){oArgs.anLow=0;}
   sSQL  = "current.phase<>\"Closed\" ";
