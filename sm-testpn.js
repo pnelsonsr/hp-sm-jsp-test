@@ -20,6 +20,7 @@ for ( i=0 ; i<fDevType.sub_type.length() ; i++) {
   print("popping");
 }
 
+
 print( "device.name: \n" + fDevType.sub_type);
 
 fDevType.doUpdate();
