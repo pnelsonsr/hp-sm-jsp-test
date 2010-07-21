@@ -1,8 +1,8 @@
 //=============================================================================
 // Name     : CNF ChM Functions
 // CodeJock : Patrick Nelson (nelson.patrick@con-way.com)
-// Version  : 0.2.1
-// Revision : 2010-193
+// Version  : 0.2.1a
+// Revision : 2010-202
 //=============================================================================
 
 //-----------------------------------------------
@@ -669,20 +669,21 @@ function SetLateRFCTest(aoObj){
 //-----------------------------------------------
 function SetLateRFC(aoObj){
 //-----------------------------------------------
-  var oArgs = dArg({acRFC:"all",acDoUpdate:true,acShowIt:false},aoObj);
-  var nGrace = 3 ; var nCount = 0 ; var nLate = 0 ; var nMIAD = 86400000 ; var cUpdate = "";
+  var oArgs=dArg({acRFC:"all",acDoUpdate:true,acShowIt:false},aoObj);
+  var nGrace=3;var nCount=0;var nLate=0;var nMIAD=86400000;var cUpSay;var cUpShw;var nPreLate;
   var dLate = new Date() ; dLate.setDate(dLate.getDate()-nGrace)
   if (oArgs.acShowIt) {print("Date Late -> "+dLate);}
   var fRFC = new SCFile("cm3r");
   var rRC = fRFC.doSelect(((oArgs.acRFC=="all") ? "open=true":"number=\""+oArgs.acRFC+"\"")+" AND category <> \"Unplanned\" AND planned.end <> NULL"); 
   while (rRC==RC_SUCCESS) {
-    nLate = parseInt((dLate-fRFC.planned_end)/nMIAD);      
-    if (nLate>0 && fRFC.cnf_planned_days!=nLate) {
+    cUpSay="not updated";cUpShw=" = ";nPreLate=fRFC.cnf_planned_days;
+    nLate = parseInt(((dLate-fRFC.planned_end)/nMIAD)+nGrace);      
+    if (nLate>nGrace && fRFC.cnf_planned_days!=nLate) {
       fRFC.cnf_planned_days = nLate.toString();
-      if (oArgs.acDoUpdate) {fRFC.doUpdate();cUpdate = "updated"} else {cUpdate = "not updated";}
-      if (oArgs.acShowIt) {print("-"+fRFC.number+" - "+fRFC.current_phase+" - "+fRFC.planned_end+" - "+fRFC.cnf_planned_days+" -> "+cUpdate);}
+      if (oArgs.acDoUpdate) {fRFC.doUpdate();cUpSay="updated";cUpShw=" > ";}
       nCount += 1;
     }
+    if (oArgs.acShowIt) {print("-"+fRFC.number+" - "+fRFC.current_phase+" - "+nPreLate+cUpShw+nLate+" -> "+cUpSay);}
     rRC = fRFC.getNext();
   }
   if (oArgs.acShowIt) {print("Overdue RFCs -> "+nCount);}
@@ -718,8 +719,9 @@ function GetLateRFC(aoObj) {
     }  
     if (bLate) {
       nLateCnt++;
-      print("Open -> "+fCM3R.number+" - "+fCM3R.current_phase);
-      print("  - Overdue - "+fCM3R.planned_end);
+      //print("Open -> "+fCM3R.number+" - "+fCM3R.current_phase);
+      //print("  - Overdue - "+fCM3R.planned_end);
+      print(fCM3R.number+" - "+fCM3R.current_phase);
     }
     rRC = fCM3R.getNext();
   }
