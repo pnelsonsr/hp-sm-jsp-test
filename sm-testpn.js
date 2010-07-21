@@ -2,19 +2,28 @@ print("=====================");
 print("Start");
 print("=====================");
 
-var d1 = new Date(); 
-var d2 = new Date();
+var thestuff="";
 
-d1="03/23/09 13:22:11";
-d2="03/24/09 10:20:10";
+thestuff += "1 -> \n";
+thestuff += "2 -> \n";
+thestuff += "3 -> \n";
+thestuff += "4 -> \n";
+thestuff += "5 -> \n";
+thestuff += "6 -> \n";
+thestuff += "7 -> \n";
+thestuff += "8 -> \n";
 
-print("d1 -> " + d1);
-print("d2 -> " + d2);
+function writeToFile( path, binary, object ) {
+  print( "Writing " + path + " to file..." );
+  var output = writeFile( path, binary, object );
+  print( "The number of bytes written to file was: " + output );
+  return output
+}
 
-print("=====================");
-
-result = system.library.cnfcm.Duration(d1,d2);
-print("result 1 -> " + result);
+thestuff += "9 -> \n";
+print(thestuff);
+print("C:\\sm.log");
+writeToFile( "C:\\sm.log", null, thestuff ); 
 
 print("=====================");
 print("Done");
