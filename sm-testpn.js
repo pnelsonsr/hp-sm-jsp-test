@@ -6,16 +6,14 @@ print("=====================");
 // Test Variable Assignment
 //--------------------------
 
-
-url1=system.library.urlCreator.getURLFromQuery("cm3r","number=CM0004640","dude");
-url2=system.library.urlCreator.getESSURLFromQuery("cm3r","number=CM0004640","dude");
-print("url -> " + url1);
-print("url -> " + url2);
-
-print("-----------------");
-
+sSayWhat="This and That";
+//iSayHow=3;
+//system.library.cnfcm.SayItNow(sSayWhat,iSayHow);
+system.library.cnfcm.SayIt(sSayWhat);
 
 
 print("=====================");
 print("Done");
 print("=====================");
+
+//print("-----------------");
