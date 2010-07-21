@@ -2,33 +2,33 @@ print("=====================");
 print("Start");
 print("=====================");
 
-cRFC = "CM0000026"; /* one CI        */
-fCMA = new SCFile("approval");
+  cRFC = "CM0000026"; /* one CI*/
+  fChange = new SCFile("cm3r");
+  aCI = new Array() ; aCIUS = new Array() 
+  aCI.push("IT DATABASE FINANCIALS","IT Client Systems Infrastructure","IT DATABASE DB2");
 
-if(fCMA.doSelect("unique.key = \"" + cRFC + "\"")==RC_SUCCESS) {
- print("Hey I Found it -> "+fCMA.current_pending_groups);
+print("aCI -> "+aCI);
+print("Length -> "+aCI.length);
+
+if(fChange.doSelect("number = \"" + cRFC + "\"")==RC_SUCCESS) {
+ print("Hey I Found it -> "+fChange.cnf_approval_list);
 }
 
-iCnt=fCMA.current_pending_groups.length();
-print("Array Count is -> "+iCnt);
-for(i=0 ; i<iCnt ; i++) {fCMA.current_pending_groups.pop();} 
-print("Cleared Value -> "+fCMA.current_pending_groups);
+for(i=0 ; i<aCI.length ; i++) {
+  if(i==0 && fChange.cnf_approval_list.length()==1) {
+    fChange.cnf_approval_list[0]=aCI[i];
+    print("add -> "+aCI[i]);
+  } else {
+    fChange.cnf_approval_list.push(aCI[i]);
+    print("push -> "+aCI[i]);
+  }
+} 
 
-fCMA.current_pending_groups.push("ITSM","DUDE","HELLO");
+print("New Value -> "+fChange.cnf_approval_list);
+print("Length -> "+fChange.cnf_approval_list.length());
 
-print("New Value -> "+fCMA.current_pending_groups);
- 
-fCMA.doUpdate();
+fChange.doUpdate();
 
 print("=====================");
 print("Done");
 print("=====================");
-
-
-//fChange = new SCFile("cm3r");
-
-//CMA.current_pending_groups.push("ITSM");
-//fCMA.current_pending_groups.push("DUDE");
-//fCMA.current_pending_groups.push("HELLO");
-  
-//fCMA.current_pending_groups={"IT DATABASE FINANCIALS", "IT Client Systems Infrastructure", "IT DATABASE DB2"}
