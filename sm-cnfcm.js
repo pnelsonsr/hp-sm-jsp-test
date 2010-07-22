@@ -1,8 +1,8 @@
 //=============================================================================
 // Name     : CNF ChM Functions
 // CodeJock : Patrick Nelson (nelson.patrick@con-way.com)
-// Version  : 0.2.3
-// Revision : 2010-201
+// Version  : 0.2.4b2
+// Revision : 2010-203
 //=============================================================================
 
 //-----------------------------------------------
@@ -718,6 +718,18 @@ var oArgs=DArg({acRFC:"all",abUp:true,abShw:false,abSA:false},aoObj);if(oArgs.ac
 }
 
 //-----------------------------------------------
+function WaitHere(aoObj) {
+//-----------------------------------------------
+var oArgs=DArg({anMSec:1000,abSA:false},aoObj);if(oArgs.abSA){SArg(oArgs);}
+//-----------------------------------------------
+// anMSec : 1000  -> Milliseconds to wait
+// abSA   : false -> Show function call Arguments 
+//-----------------------------------------------
+  var dNow=new Date();var dCur=null;
+  do {dCur=new Date();} while (dCur-dNow<oArgs.anMSec);
+} 
+
+//-----------------------------------------------
 function SetLateRFC(aoObj){
 //-----------------------------------------------
 var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abUp:true,abShw:false,abSA:false},aoObj);if(oArgs.abSA){SArg(oArgs);}
@@ -728,28 +740,25 @@ var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abUp:true,abShw:false,abSA:false},aoO
 // abShw : false  -> Show the progress
 // abSA  : false  -> Show function call Arguments 
 //-----------------------------------------------
-  var i;var nI;var nMIAD=86400000;var nCnt=0;
+  var i;var nI;var nMIAD=86400000;var nCnt=0;var cUpSay;var UpShw;var nPreLate;var cUpNot=(oArgs.abUp) ? "":"#NOT#";
   var aMyList=[];var fRFC=new SCFile("cm3r");var dLate=new Date();
   aMyList = GetLateRFC({anTop:oArgs.anTop,anLow:oArgs.anLow,anGD:oArgs.anGD,abRA:true,abSA:oArgs.abSA});
-  dLate.setDate(dLate.getDate()-oArgs.anGD);
   if(oArgs.abSA){print("aMyList -> ");}
   for (i in aMyList) {
     if(oArgs.abSA){nI=parseInt(i)+1;print(" "+nI+"-"+aMyList[i]);}
     if (fRFC.doSelect("number=\""+aMyList[i]+"\"")==RC_SUCCESS) {
-      nLate = parseInt(((dLate-fRFC.planned_end)/nMIAD)+oArgs.anGD);      
-      if (nLate>oArgs.anGD && fRFC.cnf_planned_days!=nLate) {
-        //nLate += oArgs.anGD;
-        if(oArgs.abShw){print("-"+fRFC.number+" ---- "+fRFC.cnf_planned_days+" > "+nLate);}
+      nLate = parseInt(((dLate-fRFC.planned_end)/nMIAD));
+      cUpSay="not updated";cUpShw=" = ";nPreLate=fRFC.cnf_planned_days;
+      if (nLate>oArgs.anGD && nPreLate!=nLate) {
         fRFC.cnf_planned_days = nLate.toString();
-        if(oArgs.abUp){fRFC.doUpdate();cUpdate = "updated"} else {cUpdate = "not updated";}
-        if(oArgs.abShw){print("-"+fRFC.number+" ---- "+fRFC.cnf_planned_days+" -> "+cUpdate);}
-        nCnt += 1;
-      } else {
-        if(oArgs.abShw){print("-"+fRFC.number+" - "+fRFC.cnf_planned_days+" = "+nLate);}
+        if(oArgs.abUp){fRFC.doUpdate();}
+        nCnt += 1;cUpSay="UPDATED";cUpShw=" > ";
       }
+      if(oArgs.abShw){print(fRFC.number+" - "+fRFC.current_phase+" - "+nPreLate+cUpShw+nLate+"  <-- "+cUpSay);}
     }
+    //WaitHere(1000);
   }
-  if(oArgs.abShw){print("updated late RFCs -> "+nCnt);}
+  if(oArgs.abShw){print("updated late RFCs - "+nCnt+" "+cUpNot);}
 }
 
 //-----------------------------------------------
