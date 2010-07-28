@@ -1,8 +1,8 @@
 //=============================================================================
 // Name     : CNF ChM Functions
 // CodeJock : Patrick Nelson (nelson.patrick@con-way.com)
-// Version  : 0.2.4b2
-// Revision : 2010-203
+// Version  : 0.2.4b3
+// Revision : 2010-208
 //=============================================================================
 
 //-----------------------------------------------
@@ -708,6 +708,25 @@ var oArgs=DArg({acRFC:0,acSA:false},aoObj);if(oArgs.acSA){SArg(oArgs);}
 }
 
 //-----------------------------------------------
+function DPadRFCNum(aoObj) {
+//-----------------------------------------------
+var oArgs=DArg({acRFC:0,acSA:false},aoObj);if(oArgs.acSA){SArg(oArgs);}
+//-----------------------------------------------
+// abRFC : false  -> RFC number
+// abSA  : false  -> Show function call Arguments 
+//-----------------------------------------------
+// RETURNS the RFC correctly padded
+//-----------------------------------------------
+  var sDPad;var sRFC;var bZeros=true;
+  if(oArgs.acRFC.toString().substr(0,2)!="CM"){return oArgs.acRFC;}
+  sRFC = oArgs.acRFC.toString().substr(2,7);
+  while(bZeros){
+    if(sRFC.substr(0,1)=="0"){sRFC=sRFC.substr(1);} else {bZeros=false;}
+  }
+  return sRFC;
+}
+
+//-----------------------------------------------
 function SetLateRFCTest(aoObj){
 //-----------------------------------------------
 var oArgs=DArg({acRFC:"all",abUp:true,abShw:false,abSA:false},aoObj);if(oArgs.acSA){SArg(oArgs);}
@@ -732,20 +751,19 @@ var oArgs=DArg({anMSec:1000,abSA:false},aoObj);if(oArgs.abSA){SArg(oArgs);}
 //-----------------------------------------------
 function SetLateRFC(aoObj){
 //-----------------------------------------------
-var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abUp:true,abShw:false,abSA:false},aoObj);if(oArgs.abSA){SArg(oArgs);}
+var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abUp:true,anShw:1,abSA:false},aoObj);if(oArgs.abSA){SArg(oArgs);}
 //-----------------------------------------------
 // anTop : "all"  -> Range Top value
 // anLow : 0      -> Range Low value
 // abUp  : true   -> Update the record
-// abShw : false  -> Show the progress
+// anShw : 1      -> Show the progress level
 // abSA  : false  -> Show function call Arguments 
 //-----------------------------------------------
-  var i;var nI;var nMIAD=86400000;var nCnt=0;var cUpSay;var UpShw;var nPreLate;var cUpNot=(oArgs.abUp) ? "":"#NOT#";
-  var aMyList=[];var fRFC=new SCFile("cm3r");var dLate=new Date();
-  aMyList = GetLateRFC({anTop:oArgs.anTop,anLow:oArgs.anLow,anGD:oArgs.anGD,abRA:true,abSA:oArgs.abSA});
-  if(oArgs.abSA){print("aMyList -> ");}
+  var i;var nI;var nMIAD=86400000;var nCnt=0;var cUpSay;var UpShw;var nPreLate;var cUpNot=(oArgs.abUp) ? "":" <- #NOT#";
+  var aMyList=[];var fRFC=new SCFile("cm3r");var dLate=new Date();var nGetShw=(oArgs.anShw>2) ? 2:oArgs.anShw;
+  aMyList = GetLateRFC({anTop:oArgs.anTop,anLow:oArgs.anLow,anGD:oArgs.anGD,abRA:true,anShw:nGetShw,abSA:oArgs.abSA});
   for (i in aMyList) {
-    if(oArgs.abSA){nI=parseInt(i)+1;print(" "+nI+"-"+aMyList[i]);}
+    if(oArgs.anShw>=4){nI=parseInt(i)+1;print(" "+nI+"-"+aMyList[i]);}
     if (fRFC.doSelect("number=\""+aMyList[i]+"\"")==RC_SUCCESS) {
       nLate = parseInt(((dLate-fRFC.planned_end)/nMIAD));
       cUpSay="not updated";cUpShw=" = ";nPreLate=fRFC.cnf_planned_days;
@@ -754,17 +772,19 @@ var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abUp:true,abShw:false,abSA:false},aoO
         if(oArgs.abUp){fRFC.doUpdate();}
         nCnt += 1;cUpSay="UPDATED";cUpShw=" > ";
       }
-      if(oArgs.abShw){print(fRFC.number+" - "+fRFC.current_phase+" - "+nPreLate+cUpShw+nLate+"  <-- "+cUpSay);}
+      if((oArgs.anShw>=1 && cUpSay=="UPDATED") || oArgs.anShw>=2){print(fRFC.number+" - "+fRFC.current_phase+" - "+nPreLate+cUpShw+nLate+"  <-- "+cUpSay);}
+//      if(oArgs.anShw>=2){print(fRFC.number+" - "+fRFC.current_phase+" - "+nPreLate+cUpShw+nLate+"  <-- "+cUpSay);}
+      if(oArgs.anShw>=3){print("RFCs Date -> "+fRFC.planned_end);}
     }
     //WaitHere(1000);
   }
-  if(oArgs.abShw){print("updated late RFCs - "+nCnt+" "+cUpNot);}
+  if(oArgs.anShw>=1){print("updated late RFCs - "+nCnt+" "+cUpNot);}
 }
 
 //-----------------------------------------------
 function GetLateRFC(aoObj) {
 //-----------------------------------------------
-var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abAll:false,abNew:false,abNot:false,abRA:false,abSA:true},aoObj);if(oArgs.abSA){SArg(oArgs);}
+var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abAll:false,abNew:false,abNot:false,abRA:false,anShw:1,abSA:false},aoObj);if(oArgs.abSA){SArg(oArgs);}
 //-----------------------------------------------
 // anTop : "all"  -> Range Top value
 // anLow : 0      -> Range Low value
@@ -773,6 +793,7 @@ var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abAll:false,abNew:false,abNot:false,a
 // abNew : false  -> Show only New records
 // abNot : false  -> Show Not late records
 // abRA  : false  -> Return Array
+// anShw : 1      -> Show the progress level
 // abSA  : true   -> Show function call Arguments 
 //-----------------------------------------------
 // RETURNS an array of RFC numbers
@@ -781,13 +802,13 @@ var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abAll:false,abNew:false,abNot:false,a
   var nLate=0;var nOpen=0;var bLate=false;var sSQL;var rRC;var nMIAD=86400000;var sSay;
   var dLate=new Date();var fCM3R=new SCFile("cm3r");if(oArgs.abRA){var aList=[];}
   dLate.setDate(dLate.getDate()-oArgs.anGD);
-  if(oArgs.abSA){print("Date Late -> "+dLate);}
+  if(oArgs.anShw>=1){print("Date Late -> "+dLate);}
   if(oArgs.anTop.toLowerCase()=="all"){oArgs.anTop=GetLastRFC();}
   if(oArgs.anTop<oArgs.anLow){oArgs.anLow=0;}
   sSQL  = "current.phase<>\"Closed\" ";
   sSQL += "AND (number>=\""+PadRFCNum({acRFC:oArgs.anLow})+"\" ";
   sSQL += "AND number<=\"" +PadRFCNum({acRFC:oArgs.anTop})+"\")";
-  if(!oArgs.abRA && oArgs.abSA){print("SQL -> "+sSQL);}
+  if(oArgs.anShw>=3){print("SQL -> "+sSQL);}
   rRC = fCM3R.doSelect(sSQL); 
   while (rRC==RC_SUCCESS) 	{
     nOpen++;bOver=(parseInt((dLate-fCM3R.planned_end)/nMIAD)>0) ? true:false;
@@ -795,22 +816,25 @@ var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abAll:false,abNew:false,abNot:false,a
       else if (oArgs.abNew) {bLate = (fCM3R.current_phase=="New" && fCM3R.planned_end!=null && bOver) ? true:false;}
       else {bLate = (fCM3R.current_phase!="New" && fCM3R.planned_end!=null && bOver) ? true:false;
     }
-    sSay = fCM3R.number+" - "+fCM3R.current_phase+" - "+fCM3R.cnf_planned_overdue+" - "+fCM3R.cnf_planned_days;
+    if(oArgs.anShw>=1){sSay = fCM3R.number;}
+    if(oArgs.anShw>=2){sSay = fCM3R.number+" - "+fCM3R.current_phase+" - "+fCM3R.cnf_planned_overdue+" - "+fCM3R.cnf_planned_days;}
+    if(oArgs.anShw>=4){sSay = DPadRFCNum({acRFC:fCM3R.number});}
     if (bLate) {
       nLate++;
       if (oArgs.abRA) {
         aList.push(fCM3R.number);
       } else {
-        if(oArgs.abSA){print("Late -> "+sSay);}
+        if(oArgs.anShw>=1 && oArgs.anShw<=3){print("Late -> "+sSay);}
+        if(oArgs.anShw>=4){print(sSay);}
       }
     } else {
-      if(oArgs.abSA && oArgs.abNot){print("Not -> "+sSay);}
+      if(oArgs.anShw>=1 && oArgs.abNot){print("Not -> "+sSay);}
     }
+
     rRC = fCM3R.getNext();
   }
   if (oArgs.abRA) {
     return aList.sort();
-  } else {
-    if(oArgs.abSA){print("Open RFCs -> "+nOpen);print("Late RFCs -> "+nLate);}
   }
+  if(oArgs.anShw>=1){print("Open RFCs -> "+nOpen);print("Late RFCs -> "+nLate);}
 }

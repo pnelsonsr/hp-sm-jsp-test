@@ -2,14 +2,18 @@ print("=====================");
 print("Start");
 print("=====================");
 
+var nShw = 4;
+var bNot = false;
+var bSA  = false;
+
 print("===================InclNew");
-system.library.cnfcm.GetLateRFC({abAll:true});
+system.library.cnfcm.GetLateRFC({abAll:true,abNot:bNot,anShw:nShw,abSA:bSA});
 
 print("===================OlnyNew");
-system.library.cnfcm.GetLateRFC({abNew:true});
+system.library.cnfcm.GetLateRFC({abNew:true,abNot:bNot,anShw:nShw,abSA:bSA});
 
 print("===================Default");
-system.library.cnfcm.GetLateRFC();
+system.library.cnfcm.GetLateRFC({abNot:bNot,anShw:nShw,abSA:bSA});
 
 print("=====================");
 print("Done");
@@ -29,6 +33,7 @@ GetLateRFC()
  abNew : false  -> Show only New records
  abNot : false  -> Show Not late records
  abRA  : false  -> Return Array
- abSA  : true   -> Show Arguments of the function call
+ anShw : 1      -> Show the progress level
+ abSA  : true   -> Show function call Arguments 
 
 */

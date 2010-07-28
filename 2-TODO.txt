@@ -1,9 +1,11 @@
 #===============================================================================
 # Code Jock..: Patrick Nelson
-# Version....: 0.1.2
-# Revision...: 2010-203
+# Version....: 0.1.3
+# Revision...: 2010-209
 #-------------------------------------------------------------------------------
 # ToDo list for sm code project
 #===============================================================================
+X-cnfcm -added DPadRFCNum to output of GetLateRFC -> 4
+X-cnfcm -added verbosity output levels 1-4 in GetLateRFC SetLateRFC
 X-cnfcm -cleanup display and add waithere function -> complete
 X-cnfcm -Initial commit -> complete
