@@ -2,19 +2,20 @@ print("=====================");
 print("Start");
 print("=====================");
 
-//var sRFC = "104";
-//system.library.cnfcm.SetLateRFC({anTop:sRFC,anLow:sRFC,abUp:false});
+var bUp = false;
+//var bUp = true;
+var bShw = 1;
 
-//var aList = new Array("CM0002806","CM0005077","CM0005078","CM0005080","CM0005082");
-//for (rfc in aList) { 
-//  print("updating -> "+aList[rfc]);
-//  system.library.cnfcm.SetLateRFC({anTop:aList[rfc],anLow:aList[rfc],abUp:false});
-//  system.library.cnfcm.SetLateRFC({anTop:aList[rfc],anLow:aList[rfc]});
-//}
+/*
+// "CM000","CM000"
+var aList=new Array();
+for (rfc in aList) {
+  print("updating -> "+aList[rfc]);
+  system.library.cnfcm.SetLateRFC({anTop:aList[rfc],anBot:aList[rfc],abUp:bUp,acShw:bShw});
+}
+*/
 
-//var sRFC = "104";
-//system.library.cnfcm.SetLateRFC({anTop:sRFC,anLow:sRFC,abUp:false,anShw:1});
-system.library.cnfcm.SetLateRFC({abUp:false});
+system.library.cnfcm.SetLateRFC({abUp:bUp,acShw:bShw});
 
 print("=====================");
 print("Done");
@@ -25,10 +26,14 @@ print("=====================");
 // Notes 
 //-----------------------
 
+SetLateRFC()
+
  anTop : "all"  -> Range Top value
- anLow : 0      -> Range Low value
+ anBot : 0      -> Range Low value
+ anGD  : 0      -> Grace Period Days
  abUp  : true   -> Update the record
  anShw : 1      -> Show the progress level
+ anWait: 0      -> Wait between record updates
  abSA  : false  -> Show function call Arguments 
 
 */

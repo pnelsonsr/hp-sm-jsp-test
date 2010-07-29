@@ -1,8 +1,8 @@
 //=============================================================================
 // Name     : CNF ChM Functions
 // CodeJock : Patrick Nelson (nelson.patrick@con-way.com)
-// Version  : 0.2.4b3
-// Revision : 2010-208
+// Version  : 0.2.4b4
+// Revision : 2010-209
 //=============================================================================
 
 //-----------------------------------------------
@@ -751,17 +751,19 @@ var oArgs=DArg({anMSec:1000,abSA:false},aoObj);if(oArgs.abSA){SArg(oArgs);}
 //-----------------------------------------------
 function SetLateRFC(aoObj){
 //-----------------------------------------------
-var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abUp:true,anShw:1,abSA:false},aoObj);if(oArgs.abSA){SArg(oArgs);}
+var oArgs=DArg({anTop:"all",anBot:0,anGD:3,abUp:true,anShw:1,anWait:0,abSA:false},aoObj);if(oArgs.abSA){SArg(oArgs);}
 //-----------------------------------------------
 // anTop : "all"  -> Range Top value
-// anLow : 0      -> Range Low value
+// anBot : 0      -> Range Bottom value
+// anGD  : 0      -> Grace Period Days
 // abUp  : true   -> Update the record
 // anShw : 1      -> Show the progress level
+// anWait: 0      -> Wait between record updates
 // abSA  : false  -> Show function call Arguments 
 //-----------------------------------------------
   var i;var nI;var nMIAD=86400000;var nCnt=0;var cUpSay;var UpShw;var nPreLate;var cUpNot=(oArgs.abUp) ? "":" <- #NOT#";
   var aMyList=[];var fRFC=new SCFile("cm3r");var dLate=new Date();var nGetShw=(oArgs.anShw>2) ? 2:oArgs.anShw;
-  aMyList = GetLateRFC({anTop:oArgs.anTop,anLow:oArgs.anLow,anGD:oArgs.anGD,abRA:true,anShw:nGetShw,abSA:oArgs.abSA});
+  aMyList = GetLateRFC({anTop:oArgs.anTop,anBot:oArgs.anBot,anGD:oArgs.anGD,abRA:true,anShw:nGetShw,abSA:oArgs.abSA});
   for (i in aMyList) {
     if(oArgs.anShw>=4){nI=parseInt(i)+1;print(" "+nI+"-"+aMyList[i]);}
     if (fRFC.doSelect("number=\""+aMyList[i]+"\"")==RC_SUCCESS) {
@@ -773,10 +775,9 @@ var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abUp:true,anShw:1,abSA:false},aoObj);
         nCnt += 1;cUpSay="UPDATED";cUpShw=" > ";
       }
       if((oArgs.anShw>=1 && cUpSay=="UPDATED") || oArgs.anShw>=2){print(fRFC.number+" - "+fRFC.current_phase+" - "+nPreLate+cUpShw+nLate+"  <-- "+cUpSay);}
-//      if(oArgs.anShw>=2){print(fRFC.number+" - "+fRFC.current_phase+" - "+nPreLate+cUpShw+nLate+"  <-- "+cUpSay);}
       if(oArgs.anShw>=3){print("RFCs Date -> "+fRFC.planned_end);}
     }
-    //WaitHere(1000);
+    if(oArgs.anWait>=1){WaitHere(oArgs.anWait);}
   }
   if(oArgs.anShw>=1){print("updated late RFCs - "+nCnt+" "+cUpNot);}
 }
@@ -784,10 +785,10 @@ var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abUp:true,anShw:1,abSA:false},aoObj);
 //-----------------------------------------------
 function GetLateRFC(aoObj) {
 //-----------------------------------------------
-var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abAll:false,abNew:false,abNot:false,abRA:false,anShw:1,abSA:false},aoObj);if(oArgs.abSA){SArg(oArgs);}
+var oArgs=DArg({anTop:"all",anBot:0,anGD:3,abAll:false,abNew:false,abNot:false,abRA:false,anShw:1,abSA:false},aoObj);if(oArgs.abSA){SArg(oArgs);}
 //-----------------------------------------------
 // anTop : "all"  -> Range Top value
-// anLow : 0      -> Range Low value
+// anBot : 0      -> Range Bottom value
 // anGD  : 3      -> Grace period
 // abAll : false  -> All records including New
 // abNew : false  -> Show only New records
@@ -804,9 +805,9 @@ var oArgs=DArg({anTop:"all",anLow:0,anGD:3,abAll:false,abNew:false,abNot:false,a
   dLate.setDate(dLate.getDate()-oArgs.anGD);
   if(oArgs.anShw>=1){print("Date Late -> "+dLate);}
   if(oArgs.anTop.toLowerCase()=="all"){oArgs.anTop=GetLastRFC();}
-  if(oArgs.anTop<oArgs.anLow){oArgs.anLow=0;}
+  if(oArgs.anTop<oArgs.anBot){oArgs.anBot=0;}
   sSQL  = "current.phase<>\"Closed\" ";
-  sSQL += "AND (number>=\""+PadRFCNum({acRFC:oArgs.anLow})+"\" ";
+  sSQL += "AND (number>=\""+PadRFCNum({acRFC:oArgs.anBot})+"\" ";
   sSQL += "AND number<=\"" +PadRFCNum({acRFC:oArgs.anTop})+"\")";
   if(oArgs.anShw>=3){print("SQL -> "+sSQL);}
   rRC = fCM3R.doSelect(sSQL); 
