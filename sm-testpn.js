@@ -2,24 +2,33 @@ print("=====================");
 print("Start");
 print("=====================");
 
-system.library.cnfcm.SetLateRFC({abShw:true});
+sFullRFC="CM0001234";
+//sFullRFC="1234";
 
-/*
-var aList=system.library.cnfcm.GetLateRFC({anLow:340,abRA:true,abSA:false});
-for (i in aList) { 
-  print((parseInt(i)+1)+" -> "+aList[i]);
+print("1-> "+sFullRFC);
+sDPadRFC=DPadRFCNum({acRFC:sFullRFC})
+print("2-> "+sDPadRFC);
+
+
+//-----------------------------------------------
+function DPadRFCNum(aoObj) {
+//-----------------------------------------------
+var oArgs=DArg({acRFC:0,acSA:false},aoObj);if(oArgs.acSA){SArg(oArgs);}
+//-----------------------------------------------
+// abRFC : false  -> RFC number
+// abSA  : false  -> Show function call Arguments 
+//-----------------------------------------------
+// RETURNS the RFC correctly padded
+//-----------------------------------------------
+  var sDPad;var sRFC;var bZeros=true;
+  if(oArgs.acRFC.toString().substr(0,2)!="CM"){return oArgs.acRFC;}
+  sRFC=oArgs.acRFC.toString().substr(2,7);
+  while(bZeros){
+    if(sRFC.substr(0,1)=="0"){sRFC=sRFC.substr(1);} else {bZeros=false;}
+  }
+  return sRFC;
 }
-*/
 
-/*
-var cBot="CM0000340";
-system.library.cnfcm.SetLateRFC({anLow:cBot,abUp:false,abShw:true});
-*/
-
-/*
-var cTop="CM0000340";var cBot=cTop;
-system.library.cnfcm.SetLateRFC({anTop:cTop,anLow:cBot,abUp:false,abShw:true});
-*/
 
 print("=====================");
 print("Done");
@@ -30,23 +39,16 @@ print("=====================");
 // Notes 
 //-----------------------
 
-SetLateRFC()
 
- anTop : "all"  -> In the range its to top value
- anLow : 0      -> In the range its the low value
- abUp  : true   -> Update the record
- abShw : false  -> Show the progress
- abSA  : false  -> Show Arguments of the function call
- 
-GetLateRFC()
- 
- anTop : "all"  -> In the range its to top value
- anLow : 0      -> In the range its the low value
- anGD  : 3      -> Grace period past the end date
- abAll : false  -> Inlcude All records including New
- abNew : false  -> Show only New records
- abNot : false  -> Show Not late records
- abRA  : false  -> Return Array
- abSA  : true  -> Show Arguments of the function call
 
 */
+
+//-----------------------------------------------
+function DArg(outArgs,inArgs) {
+//-----------------------------------------------
+// RETURNS Args object updated with inArgs
+//-----------------------------------------------
+  for (cArgNam in inArgs) {outArgs[cArgNam] = inArgs[cArgNam];}
+  return outArgs;
+}
+
