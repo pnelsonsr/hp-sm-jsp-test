@@ -2,10 +2,12 @@ print("=====================");
 print("Start");
 print("=====================");
 
-var sNot="Not ";var sBy=" by -> ";var sBlk="";var bLck;var sOwner;var sSay;
-var sRFC="CM0000104";
-bLck = GetRFCLock({acRFC:sRFC,abRN:true,anShw:1})
-print(((!bLck)?sNot:sBlk)+"Locked"+((bLck)?sBy:sBlk)+((bLck)?bLck:sBlk));
+var fRFC=new SCFile("cm3r");var sRFC="CM0000104";var rRC;
+if(fRFC.doSelect("number=\""+sRFC+"\"")==RC_SUCCESS) {
+  fRFC.cnf_planned_days="8";
+  if(!GetRFCLock({acRFC:sRFC})){rRC=fRFC.doUpdate();}
+  if(rRC==RC_SUCCESS){print("-> Updated");}else{print("-> Locked");}
+}
 
 print("=====================");
 print("Done");
