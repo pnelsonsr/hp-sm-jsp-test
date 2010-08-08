@@ -1,8 +1,8 @@
 //=============================================================================
 // Name     : CNF ChM Functions
 // CodeJock : Patrick Nelson (nelson.patrick@con-way.com)
-// Version  : 0.2.4b5
-// Revision : 2010-211
+// Version  : 0.2.4b6
+// Revision : 2010-220
 //=============================================================================
 
 //-----------------------------------------------
@@ -30,14 +30,12 @@ function ClearAD(sAD){
 // Takes a AD name to operate against 
 // sAD - AD name
 //-----------------------------------------------
-  var fAD = new SCFile("approvaldef");
-  var rRC = fAD.doSelect(new QueryCond("name",EQ,sAD)); 
+  var bUpdate=false;var fAD=new SCFile("approvaldef");
+  fAD.doSelect(new QueryCond("name",EQ,sAD)); 
   print("AD -> "+sAD);
   print("start group name -> "+fAD.group_name);
   print("start length -> "+fAD.group_name.length());
-  iCnt=fAD.group_name.length();
-  bUpdate=false;
-  for(i=0 ; i<iCnt ; i++) {
+  for(i=0 ; i<fAD.group_name.length() ; i++) {
     bUpdate=true;
     fAD.group_name.pop();
     fAD.sequence.pop();
@@ -46,7 +44,7 @@ function ClearAD(sAD){
   }
   print("end group name -> "+fAD.group_name);
   print("end length -> "+fAD.group_name.length());
-  fAD.doUpdate();
+  if(bUpdate){fAD.doUpdate();}
   system.functions.cleanup(fAD);
   print("AD -> "+sAD+" Cleared and Saved");
   return true;
@@ -69,15 +67,14 @@ function ClearBU(){
 //-----------------------------------------------
   function DateDiff(dBeg,dEnd){
 //-----------------------------------------------
-  var strDiff;
-  var today = new Date();
+  var dDiff;
   var dOccurEnd = dEnd.open_time;
   var dOccurBeg = dBeg.open_time;
   var dResBeg = dBeg.close_time;
   if(dBeg.close_time==null) {
-    var dDiff = dOccurEnd - dOccurBeg;
+    dDiff = dOccurEnd - dOccurBeg;
   } else {
-    var dDiff = dResBeg - dOccurBeg;
+    dDiff = dResBeg - dOccurBeg;
   }
   var diffDays = dDiff/(1000*60*60*24);
   var diffHour = (diffDays-Math.floor(diffDays))*24;
@@ -89,8 +86,7 @@ function ClearBU(){
   if(strHour.length==1) { strHour="0"+strHour; }
   if(strMins.length==1) { strMins="0"+strMins; }
   if(strSecs.length==1) { strSecs="0"+strSecs; }
-  strDiff = Math.floor(diffDays) + " " + strHour + ":" + strMins + ":" + strSecs;
-  return strDiff;
+  return Math.floor(diffDays) + " " + strHour + ":" + strMins + ":" + strSecs;
 }
 
 //-----------------------------------------------
@@ -121,7 +117,7 @@ function GetAGFromCI(sCI){
       return fDevice.assignment;
     }
   }
-  return;
+  return false;
 }
 
 //-----------------------------------------------
@@ -133,7 +129,7 @@ function GetAGLead(sAG){
       return fAssignment.coordinator_change;
     }
   }
-  return;
+  return false;
 }
 
 //-----------------------------------------------
@@ -145,7 +141,7 @@ function GetOperator(sContact){
       return fContact.operator_id;
     }
   }
-  return
+  return false;
 }
 
 //-----------------------------------------------
@@ -157,7 +153,7 @@ function GetContact(sOperator){
       return fContact.contact_name;
     }
   }
-  return
+  return false;
 }
 
 //-----------------------------------------------
@@ -234,23 +230,19 @@ function GetCIList(cRFC){
   //---------------------
   // Global Assignment
   //---------------------
-  bHead  = true ; iCICnt = 0 ; iLvl = 0 ; iRI = -1 ; iLI = 1 ; bMore = true ;
-  aCI = new Array() ; aCIUS = new Array() 
-  fCIRel = new SCFile("cirelationship") ; fChange = new SCFile("cm3r");
+  bHead=true;iCICnt=0;iLvl=0;iRI=-1;iLI=1;bMore=true;
+  aCI=new Array();aCIUS=new Array()
+  fCIRel=new SCFile("cirelationship");fChange=new SCFile("cm3r");
   //---------------------
   // Local Assignment
   //---------------------
-  var i = 0 ; var gRC ; var sSql ; var test = false;
+  var i=0;
   //======================================================
   //                   Main Code
   //======================================================
-  if(fChange.doSelect("number = \"" + cRFC + "\"")!=RC_SUCCESS) {
-    return 1;
-  }
+  if(fChange.doSelect("number = \"" + cRFC + "\"")!=RC_SUCCESS) {return 1;}
   iCICnt = (fChange.assets.getSize()==1 && fChange.assets[0]==null) ? 0 : fChange.assets.getSize() ;
-  if(!iCICnt) {
-    return 2;
-  }
+  if(!iCICnt) {return 2;}
   for(i=0 ; i<iCICnt ; i++) {
     iRI++ ; aCIUS[iRI]=[iLvl] ; aCIUS[iRI][iLI]=fChange.assets[i];    
   }
@@ -264,18 +256,15 @@ function GetCIList(cRFC){
     if(iLvl>50) {bMore=false;} //safety valve
   }
   return 0;
-  //=====
-  // eom
-  //=====
 }
 
 //-----------------------------------------------
 function GetCISOX(){
 //-----------------------------------------------
-  var fDevice = new SCFile("device") ; aAG = new Array() ; var bSOX = false;
+  var fDevice = new SCFile("device") ; var bSOX = false;
   for(i=0 ; i<aCIUS.length ; i++) {
     gRC = fDevice.doSelect("logical.name = \"" + aCIUS[i][1] + "\"");
-    if(gRC==RC_SUCCESS && aAG,fDevice.soxClassification=="In scope") {
+    if(gRC==RC_SUCCESS && fDevice.soxClassification=="In scope") {
       bSOX=true;
       break;
     }
@@ -320,24 +309,21 @@ function GetCIType(sCI){
       return fDevice.type;
     }
   }
-  return;
+  return false;
 }
 
 //-----------------------------------------------
-function GetImpact(cRFC,bClear,bAShow){
+function GetImpact(cRFC){
 //-----------------------------------------------
-  var iRC ;
-  var bSOX = false;
-  //var bShow = bAShow;
-  var bShow = false;
+  var iRC;var bSOX=false;var bShow=false;
   print("impact analysis for RFC \""+cRFC+"\"");
   iRC = system.library.cnfcm.GetCIList(cRFC);
   if(iRC==1) {
     print("impact analysis -> \""+cRFC+"\" does not exist");
-    return;
+    return false;
   } else if(iRC==2) {
     print("impact analysis -> \""+cRFC+"\" has NO CIs assigned");
-    return;
+    return false;
   } else {
     if(bShow) {
       print("this is the CI list:");
@@ -441,16 +427,17 @@ function GetImpact(cRFC,bClear,bAShow){
   }
   print("impact analysis -> saving RFC");
   fChange.doUpdate();
-  return "Good";
+  return true;
 }
 
 //-----------------------------------------------
 function GetOpAG(fChange){
 //-----------------------------------------------
+  var sql;var rc;
   var fOperator = new SCFile( "operator" );
   print("result 3a -> " + fChange.orig_operator);
   sql = "contact.name = \"" + fChange.orig_operator +"\"";
-  var rc = fOperator.doSelect( sql );
+  rc = fOperator.doSelect( sql );
   if(rc == RC_SUCCESS) {
     print("result 3b -> " + fOperator.name);
     print("result 3c -> " + fOperator.profile_change);
@@ -468,33 +455,24 @@ function GetOpAG(fChange){
 //-----------------------------------------------
 function GetRelCI(){
 //-----------------------------------------------
-  //---------------------
-  // Local Assignment
-  //---------------------
-  var iCnt  = (bHead) ? iCICnt : iLCICnt;
-  var bFMore = true ; var iLast = 0 ; var i ; var sSQL
-  //======================================================
-  //                   Main Code
-  //======================================================
+  var iCnt=(bHead)?iCICnt:iLCICnt;
+  var bFMore=true;var i;var sSQL
   for(i=0 ; i<iCnt ; i++) {
-	if(iLvl>2 && aCIUS[i][0]!=iLvl-1) {
-      continue;
-	}
+    if(iLvl>2 && aCIUS[i][0]!=iLvl-1) {continue;}
     print("impact analysis -> getting related CIs");
-    //sSQL = "related.cis = \"" + aCIUS[i][iLI] + "\"";
     sSQL = "relationship.name = \"" + aCIUS[i][iLI] + "\"";
     if(fCIRel.doSelect(sSQL)==RC_SUCCESS) {
       print("impact analysis -> checking related CIs");
       if(IsUnique(aCIUS,fCIRel.logical_name)) {
-        iRI++ ; aCIUS[iRI]=[iLvl] ; aCIUS[iRI][iLI]=fCIRel.logical_name;
+        iRI++;aCIUS[iRI]=[iLvl];aCIUS[iRI][iLI]=fCIRel.logical_name;
         print("impact analysis - ci relationship -> "+aCIUS[iRI][iLI]);
       }
       while(bFMore) {
         if(fCIRel.getNext()==RC_SUCCESS) {
           if(IsUnique(aCIUS,fCIRel.logical_name)) {
-            iRI++ ; aCIUS[iRI]=[iLvl] ; aCIUS[iRI][iLI]=fCIRel.logical_name;
+            iRI++;aCIUS[iRI]=[iLvl];aCIUS[iRI][iLI]=fCIRel.logical_name;
             print("impact analysis - ci relationship -> "+aCIUS[iRI][iLI]);
-	      }
+          }
         } else {
           bFMore = false;
         }
@@ -503,9 +481,6 @@ function GetRelCI(){
       bMore = false;
     }
   }
-  //=====
-  // eom
-  //=====
 }
 
 //-----------------------------------------------
@@ -855,4 +830,5 @@ var oA=DArg({anTop:"all",anBot:0,anGD:3,abAll:false,abNew:false,abNot:false,abRA
   }
   if(oA.abRA){return aList.sort();}
   if(oA.anShw>=1){print("Open RFCs -> "+nOpen);print("Late RFCs -> "+nLate);}
+  return true;
 }
